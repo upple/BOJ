@@ -1,38 +1,48 @@
-#include <cstdio>
+#include <iostream>
 #include <vector>
 #include <queue>
-#define INF 999999999999
+#define INF 9999999999
 using namespace std;
 
-typedef long long ll;
+struct vc { int v, c; };
 int main()
 {
+	ios_base::sync_with_stdio(0);
+	cin.tie(0);
 	int n, m, s, e;
-	scanf("%d %d", &n, &m);
-	vector<pair<int, ll> > adj[1001];
-	vector<ll> dist(n + 1, INF);
+	cin >> n >> m;
+	vector<vc> adj[1001];
+	vector<int> dist(n + 1, INF);
+	vector<bool> intoQ(n + 1, 0);
 
 	while (m--)
 	{
-		int a, b;
-		ll c;
-		scanf("%d %d %lld", &a, &b, &c);
+		int a, b, c;
+		cin >> a >> b >> c;
 		adj[a].push_back({ b, c });
 	}
 
-	priority_queue<pair<ll, int> > pq;
-	scanf("%d %d", &s, &e);
-	pq.push({ 0, s });
+	queue<int> Q;
+	cin >> s >> e;
+	Q.push(s);
 	dist[s] = 0;
-	while (!pq.empty())
-	{
-		int cur = pq.top().second;
-		pq.pop();
 
+	while (!Q.empty())
+	{
+		int cur = Q.front();
+		Q.pop();
+		intoQ[cur] = 0;
 		for (auto i : adj[cur])
-			if (dist[i.first] > dist[cur] + i.second)
-				dist[i.first] = dist[cur] + i.second, pq.push({ -dist[i.first], i.first });
+		{
+			if (dist[i.v] > dist[cur] + i.c)
+			{
+				dist[i.v] = dist[cur] + i.c;
+				if (!intoQ[i.v])
+					Q.push(i.v), intoQ[i.v] = 1;
+			}
+
+		}
 	}
 
-	printf("%d", dist[e]);
+	cout << dist[e];
 }
