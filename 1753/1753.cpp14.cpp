@@ -26,12 +26,12 @@ int main()
 		adj[a].push_back({ b, c });
 	}
 
-	queue<edge> Queue;
-	Queue.push({ s, 0 });
+	queue<int> Queue;
+	Queue.push(s);
 	dist[s] = 0;
 	while (Queue.size())
 	{
-		int cur = Queue.front().v;
+		int cur = Queue.front();
 		Queue.pop(), q[cur]=0;
 
 		for (auto &next : adj[cur])
@@ -40,7 +40,7 @@ int main()
 			{
 				dist[next.v] = dist[cur] + next.c;
 				if (!q[next.v])
-					q[next.v] = true, Queue.push({ next.v, dist[next.v] });
+					q[next.v] = true, Queue.push(next.v);
 			}
 		}
 	}
