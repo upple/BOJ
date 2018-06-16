@@ -1,0 +1,1 @@
+print('aabbcdddc'[int(input())])

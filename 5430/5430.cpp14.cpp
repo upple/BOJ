@@ -7,6 +7,8 @@ using namespace std;
 
 int main()
 {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
 	int t;
 	cin >> t;
 
@@ -34,7 +36,7 @@ int main()
 			{
 				if (dq.empty())
 				{
-					puts("error");
+					cout << "error\n";
 					goto out;
 				}
 				
