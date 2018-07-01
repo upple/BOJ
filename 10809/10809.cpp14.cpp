@@ -1,26 +1,22 @@
-#include<iostream>
-#include<cstdlib>
 #include<cstdio>
+#include<cstring>
+#include<algorithm>
 
 using namespace std;
 
 int main()
-{//97
-    char data[100];
-    int alpha[26]={-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
+{
+	char str[101];
+	
+	scanf("%s", str);
+	for (int i = 0; i < 26; i++)
+	{
+		int pos = find(str, str + strlen(str), i + 'a') - str;
+		if (pos == strlen(str))
+			pos = -1;
 
-    cin>>data;
-    for(int i=0; data[i]!=0; i++)
-    {
-        if(alpha[data[i]-97]==-1)
-            alpha[data[i]-97]=i;
+		printf("%d ", pos);
+	}
 
-    }
-
-    for(int i=0; i<26; i++)
-    {
-        cout<<alpha[i]<<" ";
-
-    }
-    return 0;
+	return 0;
 }

@@ -1,59 +1,47 @@
-#include<cstdio>
-#include<queue>
-
+#include <cstdio>
+#include <vector>
+#include <queue>
+#include <algorithm>
 using namespace std;
 
-bool adj[1001][1001] = { 0, };
-
-int no_node;
-void dfs(int n)
+vector<int> adj[1001];
+bool v[1001];
+void dfs(int x)
 {
-	static int count = 1;
-	static bool visit[1001] = { 0, };
-	visit[n] = true;
-	printf("%d ", n);
-	if (count >= no_node)
-		return;
-
-	for (int i = 1; i <= no_node; i++)
-	{
-		if (adj[n][i] == true && !visit[i])
-			count++, dfs(i);
-	}
+	v[x] = 1;
+	printf("%d ", x);
+	sort(adj[x].begin(), adj[x].end());
+	for (int i : adj[x])
+		if (!v[i]) dfs(i);
 }
 
-void bfs(int n)
+void bfs(int x)
 {
-	queue<int> Queue;
-	bool visit[1001] = { 0, };
-	Queue.push(n);
-	visit[n] = true;
-	printf("%d ", n);
-	while (!Queue.empty())
+	queue<int> Q;
+	bool v[1001] = {};
+	Q.push(x);
+	v[x] = 1;
+	while (Q.size())
 	{
-		int pos = Queue.front();
-		Queue.pop();
-		for(int i=1; i<=no_node; i++)
-			if (visit[i] == false && adj[pos][i] == true)
-				visit[i] = true, Queue.push(i), printf("%d ", i);
-
+		printf("%d ", x = Q.front());
+		Q.pop();
+		for (int i : adj[x])
+			if (!v[i]) Q.push(i), v[i] = 1;
 	}
 }
-
 int main()
 {
-	int no_edge, start, a, b;
-	scanf("%d %d %d", &no_node, &no_edge, &start);
-
-	for (int i = 0; i < no_edge; i++)
+	int n, m, v;
+	scanf("%d %d %d", &n, &m, &v);
+	while (m--)
 	{
+		int a, b;
 		scanf("%d %d", &a, &b);
-		adj[b][a] = adj[a][b] = true;
-		
+		adj[a].push_back(b);
+		adj[b].push_back(a);
 	}
 
-	dfs(start);
+	dfs(v); 
 	printf("\n");
-	bfs(start);
-	return 0;
+	bfs(v);
 }
