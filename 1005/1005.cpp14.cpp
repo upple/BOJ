@@ -1,46 +1,55 @@
-#include<cstdio>
-#include<vector>
-#include<queue>
+#include <iostream>
+#include <vector>
+#include <queue>
 using namespace std;
+
+vector<vector<int> > adj;
+vector<int> in, t;
 int main()
 {
-   int t;
-   scanf("%d", &t);
-   while (t--)
-   {
-      int n, k, dest;
-      scanf("%d %d", &n, &k);
-      vector<vector<pair<int, int> > > adj(n+1);
-      vector<vector<int> > p(n+1);
-      vector<int> cost(n+1), dist(n+1);
-      priority_queue<pair<int, int> > pq;
-      for (int i = 1; i <= n; i++)
-         scanf("%d", &cost[i]), dist[i]=0;
-      for (int i = 1; i <= k; i++)
-      {
-         int s, e;
-         scanf("%d %d", &s, &e);
-         adj[s].push_back({ cost[e], e });
-         p[e].push_back(s);
-      }
+	ios_base::sync_with_stdio(0);
+	cin.tie(0);
+	int k;
+	cin >> k;
+	while (k--)
+	{
+		int n, m, w;
+		cin >> n >> m;
+		adj.resize(n + 1), in.assign(n + 1, 0), t.resize(n + 1);
+		for (int i = 1; i <= n; i++)
+			cin >> t[i];
 
-      for(int i=1; i<=n; i++)
-        if(p[i].empty())
-            pq.push({cost[i], i}), dist[i]=cost[i];
+		while (m--)
+		{
+			int a, b;
+			cin >> a >> b;
+			adj[a].push_back(b);
+			in[b]++;
+		}
 
-      while (!pq.empty())
-      {
-         int c = pq.top().first;
-         int d = pq.top().second;
-         pq.pop();
-         for (auto i : adj[d])
-         {
-            if (dist[i.second] < dist[d] + i.first)
-               dist[i.second] = dist[d] + i.first, pq.push({ dist[i.second], i.second });
-         }
-      }
+		cin >> w;
 
-      scanf("%d", &dest);
-      printf("%d\n", dist[dest]);
-   }
+		priority_queue<pair<int, int> > Q;
+		for (int i = 1; i <= n; i++)
+			if (in[i] == 0) Q.push({ -t[i], i });
+
+		while (Q.size())
+		{
+			int cur = Q.top().second;
+			int cost = -Q.top().first;
+			Q.pop();
+			if (cur == w)
+			{
+				cout << cost << "\n";
+				break;
+			}
+			for (int i : adj[cur])
+			{
+				if (!--in[i])
+					Q.push({ -cost - t[i], i });
+			}
+		}
+
+		adj.clear(), in.clear(), t.clear();
+	}
 }

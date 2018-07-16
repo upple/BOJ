@@ -1,92 +1,61 @@
-#include<iostream>
-#include<queue>
-#include<vector>
-
+#include <cstdio>
+#include <queue>
 using namespace std;
-const int NO_DIRECTION=6;
 
-class mnh
-{
-public:
-    int m, n, h;
-
-    mnh(int x, int y, int z)
-    {
-        h=x; n=y; m=z;
-    }
-};
-
+struct xyz{int x, y, z;};
+int dx[]={1, -1, 0, 0, 0, 0};
+int dy[]={0, 0, 1, -1, 0, 0};
+int dz[]={0, 0, 0, 0, 1, -1};
+int cnt, r;
+int n, m, h, ans;
+int box[102][102][102];
 int main()
 {
-    int M, N, H, ripe=0, unripe=0, day=0;
-    cin>>M>>N>>H;
-    queue<mnh> Queue;
-    vector<mnh> direction;
-    direction.push_back(mnh(1,0,0)), direction.push_back(mnh(-1,0,0)), direction.push_back(mnh(0,1,0));
-    direction.push_back(mnh(0,-1,0)), direction.push_back(mnh(0,0,1)), direction.push_back(mnh(0,0,-1));
-
-    int ***box=new int **[H];
-    for(int i=0; i<H; i++)
-    {
-        box[i]=new int*[N];
-        for(int j=0; j<N; j++)
-            box[i][j]=new int[M];
-    }
-
-    for(int i=0; i<H; i++)
-        for(int j=0; j<N; j++)
-            for(int k=0; k<M; k++)
-            {
-                cin>>box[i][j][k];
-                if(box[i][j][k]==1)
-                {
-                    ripe++;
-                    box[i][j][k]=-1;
-                    Queue.push(mnh(i, j, k));
-                }
-
-                else if(box[i][j][k]==0)
-                    unripe++;
-            }
-
-    if(unripe==0)
-    {
-        cout<<0<<endl;
-        return 0;
-    }
-
-    while(Queue.empty()==0)
-    {
-        if(ripe--==0)
-            ripe=Queue.size()-1, day++;
-
-        for(int i=0; i<NO_DIRECTION; i++)
-        {
-            int x, y, z;
-            x=Queue.front().h+direction.at(i).h;
-            y=Queue.front().n+direction.at(i).n;
-            z=Queue.front().m+direction.at(i).m;
-
-            if(x<0 || x>=H || y<0 || y>=N || z<0 || z>=M)
-                continue;
-
-            if(box[x][y][z]==0)
-            {
-                Queue.push(mnh(x, y, z));
-                box[x][y][z]=-1;
-                unripe--;
-            }
-
-        }
-        Queue.pop();
-    }
-
-    if(unripe>0)
-    {
-        cout<<-1<<endl;
-        return 0;
-    }
-
-    cout<<day<<endl;
-    return 0;
+	queue<xyz> Q;
+	scanf("%d %d %d", &m, &n, &h);
+	
+	for(int i=1; i<=h; i++)
+	{
+		for(int j=1; j<=n; j++)
+		{
+			for(int k=1; k<=m; k++)
+			{
+				scanf("%d", &box[i][j][k]);
+				if(box[i][j][k]!=-1) cnt++;
+				if((box[i][j][k]++)==1) r++, Q.push({j, k, i});
+			}
+		}
+	}
+	
+	if(cnt==r)
+	{
+		puts("0");
+		return 0;
+	}
+	
+	while(Q.size())
+	{
+		if(r==cnt)
+		{
+			printf("%d", ans);
+			return 0;
+		}
+		int size=Q.size();
+		while(size--)
+		{
+			int x=Q.front().x, y=Q.front().y, z=Q.front().z;
+			Q.pop();
+			for(int i=0; i<6; i++)
+			{
+				int nx=x+dx[i], ny=y+dy[i], nz=z+dz[i];
+				if(box[nz][nx][ny]==1)
+				{
+					Q.push({nx, ny, nz}), box[nz][nx][ny]=2, r++;
+				}
+			}
+		}
+		ans++;
+	}
+	
+	puts("-1");
 }
