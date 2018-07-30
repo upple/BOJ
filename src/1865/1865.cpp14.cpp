@@ -1,44 +1,64 @@
-#include<cstdio>
-#include<vector>
+#include <iostream>
+#include <vector>
+#include <queue>
 #define INF 999999999
 using namespace std;
+struct edge { int v, c; };
 int main()
 {
-	int t;
-	scanf("%d", &t);
+	ios_base::sync_with_stdio(0);
+	cin.tie(0);
 
+	int t;
+	cin >> t;
 	while (t--)
 	{
-		int n, m, w;
-		scanf("%d %d %d", &n, &m, &w);
-		vector<vector<pair<int, int> > > adj(n+1);
-		vector<int> dist(n+1, INF);
+		int n, m, w, s, e, c;
+		cin >> n >> m >> w;
+		vector<vector<edge> > adj(n + 1);
+		vector<int> d(n + 1, INF), cnt(n + 1);
+		vector<bool> inQ(n + 1);
+		bool chk = true;
 		while (m--)
 		{
-			int s, e, c;
-			scanf("%d %d %d", &s, &e, &c);
+			cin >> s >> e >> c;
 			adj[s].push_back({ e, c });
 			adj[e].push_back({ s, c });
 		}
-
 		while (w--)
 		{
-			int s, e, c;
-			scanf("%d %d %d", &s, &e, &c);
+			cin >> s >> e >> c;
 			adj[s].push_back({ e, -c });
 		}
 
-		dist[1] = 0;
-		for (int k = 0; k <= n; k++)
+		queue<int> Q;
+		Q.push(1);
+		d[1] = 0;
+		while (Q.size() && chk)
 		{
-			bool change = false;
-			for (int i = 1; i <= n; i++)
-				for (auto j : adj[i])
-					if (dist[j.first] > dist[i] + j.second)
-						change=true, dist[j.first] = dist[i] + j.second;
-
-			if (k == n)
-				printf("%s\n", change ? "YES" : "NO");
+			int cur = Q.front();
+			Q.pop();
+			inQ[cur] = 0;
+			for (auto &i : adj[cur])
+			{
+				if (d[i.v] > d[cur] + i.c)
+				{
+					d[i.v] = d[cur] + i.c;
+					if (i.v == 1)
+					{
+						chk = 0;
+						break;
+					}
+					if (!inQ[i.v])
+					{
+						inQ[i.v] = 1;
+						Q.push(i.v);
+						cnt[i.v]++;
+					}
+				}
+			}
 		}
+
+		cout << (!chk ? "YES\n" : "NO\n");
 	}
 }

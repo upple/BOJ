@@ -1,40 +1,58 @@
 #include <iostream>
-#include <vector>
 #include <queue>
+#include <algorithm>
+#define MAX 100001
 using namespace std;
 
-vector<pair<int, int> > adj[1001];
-priority_queue<pair<int, int> > pq;
-bool v[1001];
-int n, m, ans;
+int p[MAX];
+int ans, r, n, m;
+struct edge { int a, b, c; };
+bool operator <(const edge &a, const edge &b)
+{
+	return a.c > b.c;
+}
+
+int Find(int x)
+{
+	if (x == p[x]) return x;
+	return p[x] = Find(p[x]);
+}
+
+int Union(edge & x)
+{
+	int a = Find(x.a);
+	int b = Find(x.b);
+	if (a == b) return 0;
+
+	if (p[a] > p[b]) swap(a, b);
+
+	p[b] = p[a];
+	r--;
+	return x.c;
+}
 int main()
 {
-    ios_base::sync_with_stdio(0);
-    cin.tie(0);
-    cin>>n>>m;
-    while(m--)
-    {
-        int a, b, c;
-        cin>>a>>b>>c;
-        adj[a].push_back({b, c});
-        adj[b].push_back({a, c});
-    }
-    pq.push({0, 1});
-    while(n)
-    {
-        int cur=pq.top().second, cost=-pq.top().first;
-        pq.pop();
-        if(v[cur]) continue;
-        v[cur]=1;
-        ans+=cost;
-        n--;
+	ios_base::sync_with_stdio(0);
+	cin.tie(0);
+	cin >> n >> m;
+	r = n - 1;
+	priority_queue<edge> pq;
+	while (m--)
+	{
+		int a, b, c;
+		cin >> a >> b >> c;
+		pq.push({ a, b, c });
+	}
 
-        for(auto &i : adj[cur])
-        {
-            int nv=i.first, nc=i.second;
-            if(!v[nv]) pq.push({-nc, nv});
-        }
-    }
+	for (int i = 1; i <= n; i++)
+		p[i] = i;
 
-    cout<<ans;
+	while (r)
+	{
+		edge cur = pq.top();
+		pq.pop();
+		ans += Union(cur);
+	}
+
+	cout << ans;
 }
