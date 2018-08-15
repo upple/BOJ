@@ -1,45 +1,51 @@
 #include<iostream>
 #include<string>
-
+#include<list>
 using namespace std;
 
 int main()
 {
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
+	ios_base::sync_with_stdio(0);
+	cin.tie(0);
 	string str;
-	int n, cossor;
+	list<char> strl;
+	int n;
 	char cmd;
 	cin >> str >> n;
-	cossor = str.size();
+	for (char i : str)
+		strl.push_back(i);
+
+	auto cosor = strl.end();
 	while (n--)
 	{
 		cin >> cmd;
 		switch (cmd)
 		{
 		case 'L':
-			if (cossor)
-				cossor--;
+			if (cosor!=strl.begin())
+				cosor--;
 			break;
 
 		case 'D':
-			if (cossor<str.size())
-				cossor++;
+			if (cosor!=strl.end())
+				cosor++;
 			break;
 
 		case 'B':
-			if (cossor)
-				str.erase(str.begin() + (cossor--) - 1);
+			if (cosor!=strl.begin())
+				cosor = strl.erase(--cosor);
 			break;
 
 		case 'P':
-			string temp;
+			char temp;
 			cin >> temp;
-			str.insert(cossor++, temp);
-
+			cosor = strl.insert(cosor, temp);
+			cosor++;
 		}
 	}
 
-	cout << str << endl;
+	for (char i : strl)
+		cout << i;
+
 	return 0;
 }
