@@ -1,80 +1,55 @@
-#include<cstdio>
-#include<map>
+#include <iostream>
+#include <algorithm>
+#define MAX 1000000
 using namespace std;
+typedef long long ll;
 
-map<pair<int, int>, long long> M;
-int n;
-void push(int pos, int val)
+ll pt[MAX + 1];
+ll arr[MAX + 1];
+int n, m, k;
+void update(int p, ll x)
 {
-    int begin=1, end=n;
-    while(1)
-    {
-        int mid=(begin+end)/2;
-        M[{begin, end}]+=val;
-        if(begin==end)
-            return;
+	ll h = arr[p];
+	arr[p] = x;
+	while (p <= n)
+	{
 
-        if(pos<=mid)
-            end=mid;
+		pt[p] += x - h;
+		p += (p&-p);
+	}
 
-        else
-            begin=mid+1;
-    }
 }
-void trade(int a, long long b)
+
+ll query(int p)
 {
-    int begin=1, end=n;
-    long long temp=M[{a, a}];
-    while(1)
-    {
-        int mid=(begin+end)/2;
-        M[{begin, end}]+=b-temp;
-        if(begin==end)
-            return;
+	ll ret = 0;
+	while (p)
+	{
+		ret += pt[p];
+		p -= (p&-p);
+	}
 
-        if(a<=mid)
-            end=mid;
-
-        else
-            begin=mid+1;
-    }
-}
-long long getSum(int begin, int end, int a, int b)
-{
-    int mid=(begin+end)/2;
-
-    if(begin>=a && end<=b)
-        return M[{begin, end}];
-
-    if(a>mid)
-        return getSum(mid+1, end, a, b);
-
-    else if(b<=mid)
-        return getSum(begin, mid, a, b);
-
-    else
-        return getSum(begin, mid, a, b)+getSum(mid+1, end, a, b);
+	return ret;
 }
 int main()
 {
-    int m, k;
-    scanf("%d %d %d", &n, &m, &k);
-    for(int i=1; i<=n; i++)
-    {
-        long long num;
-        scanf("%lld", &num);
-        push(i, num);
-    }
-    m+=k;
-    while(m--)
-    {
-        int t, a;
-        long long b;
-        scanf("%d %d %lld", &t, &a, &b);
-        if(t==1)
-            trade(a, b);
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+	cin >> n >> m >> k;
+	for (int i = 1; i <= n; i++)
+	{
+		ll x;
+		cin >> x;
+		update(i, x);
+	}
 
-        else
-            printf("%lld\n", getSum(1, n, a, (int)b));
-    }
+	m += k;
+	while (m--)
+	{
+		ll a, b, c;
+		cin >> a >> b >> c;
+		if (a == 1) update(b, c);
+		else cout << query(c) - query(b - 1) << "\n";
+	}
+
 }
