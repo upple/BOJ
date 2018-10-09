@@ -2,7 +2,11 @@
 #define INF 0x3f3f3f3f
 using namespace std;
 
-struct xy{int x, y;};
+struct dxy{int d, x, y;};
+inline bool operator <(const dxy &a, const dxy &b)
+{
+    return a.d>b.d;
+}
 int dx[]={0, 0, 1, -1};
 int dy[]={1, -1, 0, 0};
 
@@ -18,11 +22,11 @@ int main()
     
 	cin>>n>>m;
 	memset(dist, INF, 4*500*500);
-	queue<xy> Q;
+	priority_queue<dxy> pq;
 	for(int i=0; i<n; i++)
 	{
 		dist[i][m-1]=0;
-		Q.push({i, m-1});
+		pq.push({0, i, m-1});
 		inQ[i][m-1]=1;
 		p[i][m-1]=i;
 		for(int j=0; j<m; j++)
@@ -31,22 +35,21 @@ int main()
 		}
 	}
 
-	while(Q.size())
+	while(pq.size())
 	{
-		int x=Q.front().x, y=Q.front().y;
-		Q.pop();
-		inQ[x][y]=0;
-
+		int x=pq.top().x, y=pq.top().y, d=pq.top().d;
+		pq.pop();
+        if(dist[x][y]<d) continue;
 		for(int i=4; i--;)
 		{
 			int nx=x+dx[i], ny=y+dy[i];
 			if(nx<0 || nx>=n || ny<0 || ny>=m) continue;
-			if(dist[nx][ny]>dist[x][y]+cost[x][y])
+			if(dist[nx][ny]>d+cost[x][y])
 			{
-				dist[nx][ny]=dist[x][y]+cost[x][y];
+				dist[nx][ny]=d+cost[x][y];
 				p[nx][ny]=p[x][y];
-				if(!inQ[nx][ny]) inQ[nx][ny]=1, Q.push({nx, ny});
-			}
+                pq.push({dist[nx][ny], nx, ny});
+            }
 		}
 	}
 

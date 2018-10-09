@@ -5,27 +5,15 @@ int arr[1002][1003];
 int dp1[1002][1003], dp2[1002][1003], dp3[1002][1003];
 int main()
 {
-<<<<<<< HEAD
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     
-=======
->>>>>>> 0377fb96ed2a7791d61a646928ae09bd7f65daf4
 	int n, m;
 	cin>>n>>m;
 
 	for(int i=1; i<=n; i++)
-<<<<<<< HEAD
 		for(int j=2; j<=m+1; j++)
 			cin>>arr[i][j];
-=======
-	{
-		for(int j=2; j<=m+1; j++)
-		{
-			cin>>arr[i][j];
-		}
-	}
->>>>>>> 0377fb96ed2a7791d61a646928ae09bd7f65daf4
 
 	int ans=0;
 	for(int i=2; i<=m+2; i++)
