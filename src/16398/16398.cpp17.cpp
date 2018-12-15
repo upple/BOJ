@@ -37,7 +37,8 @@ int main()
         }
     }
 
-    int remain=n-1, ans=0;
+    int remain=n-1;
+    long long ans=0;
     while(remain>0)
     {
         edge e = pq.top();

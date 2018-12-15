@@ -13,33 +13,40 @@ int main()
 	{
 		unordered_map<string, pair<string, int> > M;
 		int n;
-		string s[2];
+		string a, b;
 		cin>>n;
 		while(n--)
 		{
 			string tmp;
-			cin>>s[0]>>s[1];
+			cin>>a>>b;
+			if(M[a].second==0)
+				M[a].second++;
 
-			for(int i=0; i<2; i++)
+			if(M[b].second==0)
+				M[b].second++;
+
+			tmp=a;
+			while(M[tmp].first!="")
+				tmp=M[tmp].first;
+
+			if(a!=tmp)
 			{
-				if(M[s[i]].second==0)
-					M[s[i]].second++;
-
-				tmp=s[i];
-				while(M[tmp].first!="")
-					tmp=M[tmp].first;
-
-				if(s[i]!=tmp)
-				{
-					M[s[i]].first=tmp;
-					s[i]=tmp;
-				}
-
+				M[a].first=tmp;
+				a=tmp;
 			}
 
-			string &a=s[0], &b=s[1];
-			if(s[0]==s[1])
-				cout<<M[s[0]].second<<"\n";
+			tmp=b;
+			while(M[tmp].first!="")
+				tmp=M[tmp].first;
+
+			if(b!=tmp)
+			{
+				M[b].first=tmp;
+				b=tmp;
+			}
+
+			if(a==b)
+				cout<<M[a].second<<"\n";
 
 			else if(a<b)
 			{

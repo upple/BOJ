@@ -6,7 +6,7 @@ typedef queue< pair<int, int> > myQueue;
 int dx[] = { 0, 0, 1, -1 };
 int dy[] = { 1, -1, 0, 0 };
 int n, m, count;
-char map[1001][1000];
+char map[10001][1000];
 
 void Fbfs(myQueue &Fq)
 {

@@ -2,36 +2,34 @@
 using namespace std;
 class Tree
 {
-	class Node
-	{
+	class Node{
 	public:
 		Node *num[10];
 		bool last;
-		Node(): last(false)
-		{
+		Node(): last(false){
 			for(int i=0; i<10; i++)
 				num[i]=NULL;
+		}
+		~Node(){
+			for(int i=0; i<10; i++)
+				delete num[i];
 		}
 
 	};
 
 	Node *node;
 public:
-	Tree()
-	{
+	Tree(){
 		node=new Node();
 	}
-	~Tree()
-	{
+	~Tree(){
 		delete node;
 	}
-	bool isFill(char *str)
-	{
+	bool isFill(char *str){
 		Node *p=node;
 		bool f=true;
 
-		for(int i=0; *(str+i); i++)
-		{
+		for(int i=0; *(str+i); i++){
 			if(p->last==true)
 				return true;
 
@@ -51,22 +49,18 @@ int main()
 	bool end;
 	int no_case, no_data;
 	scanf("%d", &no_case);
-	while(no_case--)
-	{
+	while(no_case--){
 		Tree tree;
 		end=false;
 		scanf("%d", &no_data);
-		for(int i=0; i<no_data; i++)
-		{
+		for(int i=0; i<no_data; i++){
 			scanf("%s", num);
-			if(!end && tree.isFill(num))
-			{
+			if(!end && tree.isFill(num)){
 				end=true;
 				printf("NO\n");
 			}
 
-			else if(i==no_data-1 && !end)
-			{
+			else if(i==no_data-1 && !end){
 				printf("YES\n");
 				break;
 			}

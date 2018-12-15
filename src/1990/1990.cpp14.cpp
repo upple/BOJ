@@ -5,6 +5,14 @@
 #include<algorithm>
 #include<set>
 using namespace std;
+
+void check(int num)
+{
+	string k = to_string(num);
+	reverse(k.begin(), k.end());
+	if (to_string(num) == k)
+		printf("%d\n", num);
+}
 int main()
 {
 	int s, e;

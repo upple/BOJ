@@ -1,23 +1,26 @@
 #include <cstdio>
 #include <vector>
-bool arr[100000001];
-std::vector<int> P;
+using namespace std;
+bool arr[10000001];
+vector<int> P;
 int main()
 {
-	for (int i = 2; i <= 10000000; i++)
+	int k;
+	scanf("%d", &k);
+	for(int i=2; i<=10000000; i++)
 	{
-		if (!arr[i])
+		if(!arr[i])
 		{
-			int tmp = i;
 			P.push_back(i);
-			while ((tmp += i) <= 10000000)
+			if(P.size()==k) break;
+ 
+			int tmp=i;
+			while((tmp+=i)<=10000000)
 			{
-				arr[tmp] = 1;
+				arr[tmp]=1;
 			}
 		}
 	}
-
-	int a;
-	scanf("%d", &a);
-	printf("%d", P[a - 1]);
+ 
+	printf("%d", P.back());
 }

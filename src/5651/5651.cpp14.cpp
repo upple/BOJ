@@ -1,9 +1,6 @@
 #include <iostream>
-#include <vector>
 #include <queue>
 #include <algorithm>
-#include <sstream>
-#include <string>
 #define MAX 301
 #define INF 999999999
 using namespace std;
@@ -88,9 +85,12 @@ int main()
 
 		int ans = 0;
 		for (int i = 1; i <= n; i++)
-			for (edge *e : adj[i])
+			for (edge *&e : adj[i])
 				if (!e->r && !bfs(i, e->v)) ans++;
 
+		for (int i = 1; i <= n; i++)
+			for (edge *&e : adj[i])
+				delete e;
 		cout << ans << "\n";
 	}
 }
