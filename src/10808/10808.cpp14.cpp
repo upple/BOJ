@@ -1,20 +1,17 @@
-#include<iostream>
-#include<string>
-
+#include<cstdio>
 using namespace std;
 
 int main()
 {
-	int num[26]={0, };
-	string str;
-	cin>>str;
+	int num[26] = { 0, };
+	char str[101];
+	scanf("%s", str);
 
-	for(int i=0; i<str.size(); i++)
-		num[str.at(i)-'a']++;
+	for (int i = 0; str[i]; i++)
+		num[str[i] - 'a']++;
 
-	for(int i=0; i<26; i++)
-		cout<<num[i]<<" ";
+	for (int i = 0; i < 26; i++)
+		printf("%d ", num[i]);
 
-	cout<<endl;
 	return 0;
 }
