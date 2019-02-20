@@ -1,0 +1,1 @@
+print(sum([sum([b%a for a, b in [map(int, input().split())]]) for _ in range(int(input()))]))
