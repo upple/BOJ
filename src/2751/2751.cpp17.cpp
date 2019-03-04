@@ -1,19 +1,17 @@
-#include <cstdio>
-#include <set>
+#include <bits/stdc++.h>
 using namespace std;
-
-set<int> S;
+int arr[1000001];
 int main()
 {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    
     int n;
-    scanf("%d", &n);
+    cin>>n;
     for(int i=0; i<n; i++)
-    {
-        int x;
-        scanf("%d", &x);
-        S.insert(x);
-    }
-
-    for(int i : S)
-        printf("%d ", i);
+        cin>>arr[i];
+    
+    sort(arr, arr+n);
+    for(int i=0; i<n; i++)
+        cout<<arr[i]<<'\n';
 }

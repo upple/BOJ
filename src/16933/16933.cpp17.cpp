@@ -3,67 +3,50 @@ using namespace std;
 const int INF=0x3f3f3f3f;
 int n, m, k;
 struct xy{int x, y, d;};
-const int dx[]={0, 0, 1, -1, 0};
-const int dy[]={1, -1, 0, 0, 0};
+const int dx[]={0, 0, 1, -1};
+const int dy[]={1, -1, 0, 0};
 
 char arr[1002][1002];
-int dist[2][11][1002][1002];
-bool inQ[2][11][1002][1002];
+bool v[11][1002][1002];
 
-int bell()
+int bfs()
 {
-	dist[0][0][1][1]=1;
-	queue<xy> Q;
-	Q.push({1, 1, 0});
-	while(Q.size())
-	{
-		auto[x, y, d]=Q.front();
-		Q.pop();
+    queue<xy> Q;
+    Q.push({1, 1, 0});
+    v[0][1][1]=1;
+    int cnt=0;
+    while(Q.size())
+    {
+        int size=Q.size();
+        while(size--)
+        {
+            int x=Q.front().x, y=Q.front().y, d=Q.front().d;
+            Q.pop();
 
-		for(int i=5; i--;)
-		{
-			int nx=x+dx[i], ny=y+dy[i];
-			if(arr[nx][ny]==0) continue;
-			if(arr[nx][ny]=='1' && i!=4 && d<k)
-			{
-				if(dist[1][d+1][nx][ny]>dist[0][d][x][y]+1)
-				{
-					dist[1][d+1][nx][ny]=dist[0][d][x][y]+1;
-					if(inQ[1][d+1][nx][ny]==0)
-					{
-						inQ[1][d+1][nx][ny]==1;
-						Q.push({nx, ny, d+1});
-					}
-				}
-			}
-			else if(arr[nx][ny]=='0' || i==4)
-			{
-				for(int c=0; c<2; c++)
-				{
-					if(dist[!c][d][nx][ny]>dist[c][d][x][y]+1)
-					{
-						dist[!c][d][nx][ny]=dist[c][d][x][y]+1;
-						if(inQ[!c][d][nx][ny]==0)
-						{
-							inQ[!c][d][nx][ny]==1;
-							Q.push({nx, ny, d});
-						}
-					}
-				}
-				
-			}
-		}
-	}
+            if(x==n && y==m) return cnt+1;
 
-	int ret=INF;
-	for(int i=2; i--;)
-	{
-		for(int j=11; j--;)
-		{
-			ret=min(ret, dist[i][j][n][m]);
-		}
-	}
-	return ret;
+            for(int i=4; i--;)
+            {
+                int nx=x+dx[i], ny=y+dy[i];
+                if(arr[nx][ny]=='0' && !v[d][nx][ny])
+                {
+                    Q.push({nx, ny, d});
+                    v[d][nx][ny]=1;
+                }
+
+                else if(d<k && arr[nx][ny]=='1' && cnt%2==0 && !v[d+1][nx][ny])
+                {
+                    Q.push({nx, ny, d+1});
+                    v[d+1][nx][ny]=1;
+                }
+            }
+
+            if(cnt%2==1) Q.push({x, y, d});
+        }
+        cnt++;
+    }
+
+    return -1;
 }
 int main()
 {
@@ -74,7 +57,5 @@ int main()
 	for(int i=1; i<=n; i++)
 		cin>>arr[i]+1;
 
-	memset(dist, INF, sizeof(dist));
-	int ret=bell();
-	cout<<(ret==INF?-1:ret);
+	cout<<bfs();
 }
