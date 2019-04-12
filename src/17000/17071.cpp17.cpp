@@ -1,54 +1,56 @@
-#include <iostream>
-#include <queue>
-#include <cstring>
+#include <bits/stdc++.h>
 using namespace std;
 
-bool v[500001];
-int n, k;
-
+int v[2][500001];
 int main()
 {
-    cin>>n>>k;
-    int speed=1;
-    int cnt=0;
+    int a, b;
+    cin>>a>>b;
+
+    memset(v, -1, sizeof(v));
 
     queue<int> Q;
-    Q.push(n);
+    Q.push(a);
+    v[0][a]=0;
+    bool o=0;
     while(Q.size())
     {
-        memset(v, 0, sizeof(v));
         for(int size=Q.size(); size--;)
-        {
+        {    
             int cur=Q.front();
             Q.pop();
-            if(cur==k)
-            {
-                cout<<cnt;
-                return 0;
-            }
-            if(cur-1>=0 && v[cur-1]==0)
+            if(cur>0 && v[!o][cur-1]==-1)
             {
                 Q.push(cur-1);
-                v[cur-1]=1;
+                v[!o][cur-1]=v[o][cur]+1;
             }
-            if(cur+1<=500000 && v[cur+1]==0)
+            if(cur<500000 && v[!o][cur+1]==-1)
             {
                 Q.push(cur+1);
-                v[cur+1]=1;
+                v[!o][cur+1]=v[o][cur]+1;
             }
-            if(cur<=250000 && v[cur<<1]==0)
+            if(cur<=250000 && v[!o][cur<<1]==-1)
             {
                 Q.push(cur<<1);
-                v[cur<<1]=1;
+                v[!o][cur<<1]=v[o][cur]+1;
             }
         }
-
-        cnt++;
-        k+=speed++;
-        if(k>500000)
-        {
-            cout<<-1;
-            return 0;
-        }
+        o=!o;
+        
     }
+
+    for(int i=1; b<=500000; i++)
+    {
+        if(v[(i-1)%2][b]!=-1)
+        {
+            if(v[(i+1)%2][b]<i && v[(i+1)%2][b]%2==(i-1)%2)
+            {
+                cout<<i-1;
+                return 0;
+            }
+        }
+        b+=i;
+    }
+
+    cout<<-1;
 }

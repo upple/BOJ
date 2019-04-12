@@ -1,44 +1,50 @@
-#include <bits/stdc++.h>
-using namespace std;
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cstring>
+#include <queue>
 
-int (*cube[5])[5];
-int arr[5][5][5];
-bool v[5][5][5];
+using namespace std;
+struct xyz{int x, y, z;};
+vector<vector<vector<int> > > arr(5, vector<vector<int> >(5, vector<int>(5, 0)));
+vector<vector<int> > tmp(5, vector<int>(5, 0));
 const int dx[]={0, 0, 1, -1, 0, 0};
 const int dy[]={1, -1, 0, 0, 0, 0};
 const int dz[]={0, 0, 0, 0, 1, -1};
-int tmp[5][5];
+bool v[5][5][5];
 int ans=1e9;
-int bfs()
+
+void solve()
 {
-    queue<int> Q;
+    queue<xyz> Q;
     memset(v, 0, sizeof(v));
-    Q.push(0);
     v[0][0][0]=1;
-    if(cube[0][0][0]==0 || cube[4][4][4]==0) return -1;
-    int cnt=0;
+    Q.push({0, 0, 0});
+    int ret=0;
     while(Q.size())
     {
-        if(cnt==ans) return -1;
         for(int size=Q.size(); size--;)
         {
-            int x=Q.front()/100, y=Q.front()%100/10, z=Q.front()%10;
+            int x=Q.front().x, y=Q.front().y, z=Q.front().z;
             Q.pop();
-
-            if(x==4 && y==4 && z==4) return cnt;
-            for(int i=6; i--;)
+            if(x==4 && y==4 && z==4)
+            {
+                ans=min(ans, ret);
+                return;
+            }
+            for(int i=0; i<6; i++)
             {
                 int nx=x+dx[i], ny=y+dy[i], nz=z+dz[i];
-                if(nx<0 || nx>=5 || ny<0 || ny>=5 || nz<0 || nz>=5 || cube[nx][ny][nz]==0 || v[nx][ny][nz]) continue;
-                Q.push(nx*100+ny*10+nz);
+                if(nx<0 || nx>4 || ny<0 || ny>4 || nz<0 || nz>4 || v[nx][ny][nz] || arr[nx][ny][nz]==0) continue;
+                Q.push({nx, ny, nz});
                 v[nx][ny][nz]=1;
             }
         }
 
-        cnt++;
+        ret++;
+
     }
 
-    return -1;
 }
 
 void turn(int p)
@@ -47,17 +53,11 @@ void turn(int p)
     {
         for(int j=0; j<5; j++)
         {
-            tmp[4-j][i]=cube[p][i][j];
+            tmp[j][4-i]=arr[p][i][j];
         }
     }
 
-    for(int i=0; i<5; i++)
-    {
-        for(int j=0; j<5; j++)
-        {
-            cube[p][i][j]=tmp[i][j];
-        }
-    }
+    swap(tmp, arr[p]);
 }
 int main()
 {
@@ -66,23 +66,15 @@ int main()
         for(int j=0; j<5; j++)
         {
             for(int k=0; k<5; k++)
-            {
                 cin>>arr[i][j][k];
-            }
         }
-
-        cube[i]=arr[i];
     }
 
+    sort(arr.begin(), arr.end());
     do
     {
         for(int i=0; i<4; i++)
         {
-            if(cube[0][0][0]==0)
-            {
-                turn(0);
-                continue;
-            }
             for(int j=0; j<4; j++)
             {
                 for(int k=0; k<4; k++)
@@ -91,8 +83,8 @@ int main()
                     {
                         for(int m=0; m<4; m++)
                         {
-                            int ret=bfs();
-                            if(ret!=-1) ans=min(ans, ret);
+                            if(arr[0][0][0]==0) continue;
+                            solve();
                             turn(4);
                         }
                         turn(3);
@@ -103,8 +95,8 @@ int main()
             }
             turn(0);
         }
-    } while(next_permutation(cube, cube+5));
+        
+    } while (next_permutation(arr.begin(), arr.end()));
     
-
     cout<<(ans==1e9?-1:ans);
 }

@@ -1,30 +1,25 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <string>
+#include <algorithm>
 using namespace std;
 
 int main()
 {
-    string a, b;
+    string a;
+    int b;
     cin>>a>>b;
 
-    sort(a.begin(), a.end());
+    sort(a.rbegin(), a.rend());
 
-    string ans;
-    if(a.size()>b.size())
-    {
-        cout<<-1;
-        return 0;
-    }
-    bool find=false;
     do
     {
-        if(stoi(a)<=stoi(b))
-            ans=a, find=true;
+        if(stoi(a)<b)
+        {
+            if(a[0]=='0') cout<<-1;
+            else cout<<a;
+            return 0;
+        }
 
-        else break;
-    } while (next_permutation(a.begin(), a.end()));
-    
-    if(ans[0]!='0' && find==true)
-        cout<<stoi(ans);
-
-    else cout<<-1;
+    }while(prev_permutation(a.begin(), a.end()));
+    cout<<-1;
 }
