@@ -1,7 +1,7 @@
-#include<cstdio>
-
-int main()
-{
-	printf("10/14");
-	return 0;
+#include<cstdio>
+
+int main()
+{
+	printf("10/14");
+	return 0;
 }

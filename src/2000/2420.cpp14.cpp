@@ -1,14 +1,11 @@
-#include <cstdio>
-#include <cmath>
-using namespace std;
-int main()
-{
-	long long n, m, ans;
-	scanf("%lld %lld", &n, &m);
-	ans = n - m;
-	if (ans < 0)
-		ans *= -1;
-	printf("%lld", ans);
-	return 0;
-
-}
+#include <cstdio>
+#include <cmath>
+using namespace std;
+int main()
+{
+	long long n, m;
+	scanf("%lld %lld", &n, &m);
+	printf("%lld", abs(n - m));
+	return 0;
+
+}
