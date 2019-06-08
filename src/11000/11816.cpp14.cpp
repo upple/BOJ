@@ -1,10 +1,10 @@
-#include<cstdio>
-
-int main()
-{
-	int num;
-	scanf("%i", &num);
-
-	printf("%d", num);
-	return 0;
+#include<cstdio>
+
+int main()
+{
+	int num;
+	scanf("%i", &num);
+
+	printf("%d", num);
+	return 0;
 }

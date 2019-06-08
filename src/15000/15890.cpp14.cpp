@@ -1,6 +1,6 @@
-#include <cstdio>
-
-int main()
-{
-    printf("20180729");
+#include <cstdio>
+
+int main()
+{
+    printf("20180729");
 }

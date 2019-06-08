@@ -1,6 +1,6 @@
-#include <cstdio>
-
-int main()
-{
-	printf("파이팅!!");
+#include <cstdio>
+
+int main()
+{
+	printf("파이팅!!");
 }
